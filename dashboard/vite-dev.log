@@ -1,0 +1,33 @@
+
+> watad-admin-dashboard@1.0.0 dev
+> vite --host 0.0.0.0 --host 0.0.0.0
+
+
+  [32m[1mVITE[22m v7.3.6[39m  [2mready in [0m[1m1196[22m[2m[0m ms[22m
+
+  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m5174[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.2.111:[1m5174[22m/[39m
+[2m12:14:47 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2msrc/App.tsx[22m
+[2m12:14:47 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+[2m12:14:47 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2msrc/main.tsx[22m
+[2m12:14:47 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2msrc/vite-env.d.ts[22m
+[2m12:14:57 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mindex.html[22m
+[2m12:15:19 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mpackage.json[22m
+[2m12:15:21 AM[22m [36m[1m[vite][22m[39m changed tsconfig file detected: C:/Users/Aya/Desktop/zz/dashboard/tsconfig.json - Clearing cache and forcing full-reload to ensure TypeScript is compiled with updated config values.
+[2m12:15:21 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mtsconfig.json[22m
+[2m12:15:32 AM[22m [36m[1m[vite][22m[39m [32mvite.config.ts changed, restarting server...[39m
+Port 5173 is in use, trying another one...
+[2m12:15:32 AM[22m [36m[1m[vite][22m[39m server restarted.
+[2m12:15:59 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mindex.html[22m
+[2m12:15:59 AM[22m [36m[1m[vite][22m[39m changed tsconfig file detected: C:/Users/Aya/Desktop/zz/dashboard/tsconfig.json - Clearing cache and forcing full-reload to ensure TypeScript is compiled with updated config values.
+[2m12:26:20 AM[22m [36m[1m[vite][22m[39m [32m.env changed, restarting server...[39m
+[2m12:26:20 AM[22m [36m[1m[vite][22m[39m server restarted.
+[2m1:37:16 PM[22m [36m[1m[vite][22m[39m [32mvite.config.ts changed, restarting server...[39m
+[2m1:37:18 PM[22m [36m[1m[vite][22m[39m server restarted.
+[2m1:37:50 PM[22m [36m[1m[vite][22m[39m [32mvite.config.ts changed, restarting server...[39m
+[2m1:37:50 PM[22m [36m[1m[vite][22m[39m [32mvite.config.ts changed, restarting server...[39m
+[2m1:37:51 PM[22m [36m[1m[vite][22m[39m server restarted.
+[2m1:40:55 PM[22m [36m[1m[vite][22m[39m [32m.env changed, restarting server...[39m
+[2m1:40:55 PM[22m [36m[1m[vite][22m[39m server restarted.
+[2m1:40:55 PM[22m [36m[1m[vite][22m[39m [32m.env changed, restarting server...[39m
+[2m1:40:55 PM[22m [36m[1m[vite][22m[39m server restarted.

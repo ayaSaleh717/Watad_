@@ -1,0 +1,251 @@
+@import "tailwindcss";
+
+@theme {
+  --color-gold-50: #fff8e1;
+  --color-gold-300: #ffd24d;
+  --color-gold-400: #fdc324;
+  --color-gold-500: #fbb40b;
+  --color-gold-600: #d79a0b;
+  --color-gold-700: #a77408;
+  --color-brown-950: #120b03;
+  --color-brown-900: #1c1206;
+  --color-brown-800: #2b1c0a;
+  --color-brown-700: #4a3010;
+  --color-ink: #2f2f31;
+  --color-fog: #f5f3ee;
+  --font-sans: "Cairo", "Inter", system-ui, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 72px;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  background: var(--color-fog);
+  color: var(--color-ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--color-gold-500);
+  color: var(--color-brown-950);
+}
+
+/* ---------- Splash (blur intro) ---------- */
+.splash {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  background: rgba(18, 11, 3, 0.45);
+  -webkit-backdrop-filter: blur(28px) saturate(1.2);
+  backdrop-filter: blur(28px) saturate(1.2);
+  transition:
+    backdrop-filter 1.2s ease,
+    -webkit-backdrop-filter 1.2s ease,
+    background-color 1.2s ease,
+    opacity 1.2s ease;
+}
+.splash.out {
+  -webkit-backdrop-filter: blur(0px) saturate(1);
+  backdrop-filter: blur(0px) saturate(1);
+  background: rgba(18, 11, 3, 0);
+  opacity: 0;
+  pointer-events: none;
+}
+.splash-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  animation: splash-in 1s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  transition:
+    opacity 0.9s ease,
+    transform 0.9s ease,
+    filter 0.9s ease;
+}
+.splash.out .splash-inner {
+  opacity: 0;
+  transform: scale(1.15);
+  filter: blur(8px);
+}
+.splash-bar {
+  width: 11rem;
+  height: 3px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.15);
+  overflow: hidden;
+}
+.splash-bar > span {
+  display: block;
+  height: 100%;
+  width: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--color-gold-600), var(--color-gold-300));
+  transform-origin: left center;
+  animation: bar 3.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+[dir="rtl"] .splash-bar > span {
+  transform-origin: right center;
+}
+
+/* ---------- Hero entrance ---------- */
+.hero-item {
+  opacity: 0;
+}
+[data-ready="true"] .hero-item {
+  animation: rise 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  animation-delay: var(--d, 0s);
+}
+
+/* ---------- Scroll reveal ---------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.8s ease,
+    transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition-delay: var(--d, 0s);
+}
+.reveal.in {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---------- Pumpjack ---------- */
+.pj-beam {
+  transform-origin: 114px 50px;
+  animation: rock 3.4s ease-in-out infinite;
+}
+.pj-rod {
+  animation: rod 3.4s ease-in-out infinite;
+}
+.pj-wheel {
+  transform-origin: 168px 118px;
+  animation: spin 6.8s linear infinite;
+}
+
+/* ---------- Droplets ---------- */
+.drop {
+  position: absolute;
+  bottom: -20px;
+  border-radius: 50% 0 50% 50%;
+  transform: rotate(-45deg);
+  background: linear-gradient(135deg, var(--color-gold-300), var(--color-gold-600));
+  opacity: 0;
+  animation: drop-up linear infinite;
+}
+
+/* ---------- Wave ---------- */
+.wave {
+  animation: wave-x 14s linear infinite;
+}
+.wave.slow {
+  animation-duration: 22s;
+  animation-direction: reverse;
+}
+
+.shine {
+  background: linear-gradient(100deg, var(--color-gold-300), var(--color-gold-500), #fff3c4, var(--color-gold-500), var(--color-gold-300));
+  background-size: 250% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shine 5s linear infinite;
+}
+
+.orbit {
+  animation: spin 24s linear infinite;
+}
+.orbit.rev {
+  animation-direction: reverse;
+  animation-duration: 36s;
+}
+.float {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* ---------- Stations illustration ---------- */
+.flow-pipe {
+  stroke-dasharray: 6 8;
+  animation: dash 1.2s linear infinite;
+}
+.flame {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: flicker 0.9s ease-in-out infinite alternate;
+}
+.vapor {
+  animation: vapor 4s ease-out infinite;
+}
+@keyframes dash {
+  to { stroke-dashoffset: -14; }
+}
+@keyframes flicker {
+  from { transform: scale(1, 1); }
+  to { transform: scale(0.82, 1.18); }
+}
+@keyframes vapor {
+  0% { transform: translateY(0) scale(1); opacity: 0; }
+  20% { opacity: 0.45; }
+  100% { transform: translateY(-46px) scale(1.7); opacity: 0; }
+}
+
+@keyframes splash-in {
+  from { opacity: 0; transform: scale(0.85) translateY(10px); filter: blur(6px); }
+  to { opacity: 1; transform: none; filter: blur(0); }
+}
+@keyframes bar {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+@keyframes rise {
+  from { opacity: 0; transform: translateY(34px); filter: blur(6px); }
+  to { opacity: 1; transform: none; filter: blur(0); }
+}
+@keyframes rock {
+  0%, 100% { transform: rotate(7deg); }
+  50% { transform: rotate(-7deg); }
+}
+@keyframes rod {
+  0%, 100% { transform: translateY(-12px); }
+  50% { transform: translateY(12px); }
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-14px); }
+}
+@keyframes drop-up {
+  0% { transform: translateY(0) rotate(-45deg); opacity: 0; }
+  15% { opacity: 0.55; }
+  100% { transform: translateY(-95vh) rotate(-45deg); opacity: 0; }
+}
+@keyframes wave-x {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@keyframes shine {
+  to { background-position: -250% 0; }
+}
+@keyframes pulse-ring {
+  0% { transform: scale(0.8); opacity: 0.6; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  html { scroll-behavior: auto; }
+}

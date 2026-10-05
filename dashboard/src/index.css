@@ -1,0 +1,62 @@
+@import "tailwindcss";
+
+@theme {
+  --color-gold-50: #fff8e1;
+  --color-gold-300: #ffd24d;
+  --color-gold-400: #fdc324;
+  --color-gold-500: #fbb40b;
+  --color-gold-600: #d79a0b;
+  --color-gold-700: #a77408;
+  --color-brown-950: #120b03;
+  --color-brown-900: #1c1206;
+  --color-brown-800: #2b1c0a;
+  --color-brown-700: #4a3010;
+  --color-ink: #2f2f31;
+  --color-fog: #f5f3ee;
+  --font-sans: "Cairo", "Inter", system-ui, sans-serif;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  background: var(--color-fog);
+  color: var(--color-ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--color-gold-500);
+  color: var(--color-brown-950);
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-gold-500);
+  outline-offset: 2px;
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.toast-in {
+  animation: toast-in 0.22s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
