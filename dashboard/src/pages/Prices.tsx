@@ -33,24 +33,16 @@ interface Row {
   ar: Side
   en: Side
 }
-interface PointRow {
-  id: number
-  v: string
-  ar: string
-  en: string
-}
 interface State {
   dateAr: string
   dateEn: string
   rows: Row[]
-  points: PointRow[]
 }
 
 let uid = 0
 const nextId = () => ++uid
 const PRICE_RE = /^\d+([.,]\d+)?$/
 const validPrice = (v: string) => PRICE_RE.test(v.trim())
-const validPoint = (v: string) => v.trim() !== '' && Number.isFinite(Number(v)) && Number(v) >= 0
 
 function toState(p: CostsPayload): State {
   return {
@@ -67,7 +59,6 @@ function toState(p: CostsPayload): State {
         en: { label: e?.label ?? '', product: e?.product ?? '', unit: e?.unit ?? '' },
       }
     }),
-    points: p.ar.points.map((pt, i) => ({ id: nextId(), v: String(pt.v), ar: pt.m, en: p.en.points[i]?.m ?? '' })),
   }
 }
 
@@ -82,7 +73,6 @@ function toPayload(s: State): CostsPayload {
       product: r[l].product,
       unit: r[l].unit,
     })),
-    points: s.points.map((p) => ({ m: p[l], v: Number(p.v) })),
   })
   return { ar: side('ar'), en: side('en') }
 }
@@ -132,12 +122,10 @@ export function Prices() {
   if (!draft || !saved) return <LoadState loading={loading} error={error} onRetry={() => void load()} />
 
   const dirty = JSON.stringify(draft) !== JSON.stringify(saved)
-  const hasInvalid = draft.rows.some((r) => !validPrice(r.value)) || draft.points.some((p) => !validPoint(p.v))
+  const hasInvalid = draft.rows.some((r) => !validPrice(r.value))
 
   const patch = (changes: Partial<State>) => setDraft({ ...draft, ...changes })
   const patchRow = (id: number, fn: (r: Row) => Row) => patch({ rows: draft.rows.map((r) => (r.id === id ? fn(r) : r)) })
-  const patchPoint = (id: number, changes: Partial<PointRow>) =>
-    patch({ points: draft.points.map((p) => (p.id === id ? { ...p, ...changes } : p)) })
 
   const addRow = () => {
     const last = draft.rows[draft.rows.length - 1]
@@ -322,48 +310,6 @@ export function Prices() {
         <IconPlus className="h-4 w-4" />
         {t.prices.addCard}
       </Button>
-
-      <section className="mt-12 rounded-3xl bg-white p-5 ring-1 ring-brown-900/10 sm:p-6">
-        <h2 className="text-xl font-black text-brown-950">{t.prices.chartTitle}</h2>
-        <p className="mt-1.5 text-sm text-ink/65">{t.prices.chartSub}</p>
-
-        <div className="mt-5 space-y-3">
-          {draft.points.map((p, i) => (
-            <div key={p.id} className="grid grid-cols-[1fr_1fr_6.5rem_auto] items-end gap-2 sm:gap-3">
-              <Field label={i === 0 ? <><LangTag code="ar" /> {t.prices.month}</> : <LangTag code="ar" />}>
-                <Input dir="rtl" value={p.ar} onChange={(e) => patchPoint(p.id, { ar: e.target.value })} />
-              </Field>
-              <Field label={i === 0 ? <><LangTag code="en" /> {t.prices.month}</> : <LangTag code="en" />}>
-                <Input dir="ltr" value={p.en} onChange={(e) => patchPoint(p.id, { en: e.target.value })} />
-              </Field>
-              <Field label={i === 0 ? t.prices.value : <>&nbsp;</>}>
-                <Input
-                  dir="ltr"
-                  inputMode="decimal"
-                  value={p.v}
-                  invalid={!validPoint(p.v)}
-                  onChange={(e) => patchPoint(p.id, { v: e.target.value })}
-                />
-              </Field>
-              <IconButton
-                label={t.common.delete}
-                className="mb-0.5 text-red-700 hover:bg-red-50"
-                onClick={() => patch({ points: draft.points.filter((x) => x.id !== p.id) })}
-              >
-                <IconTrash className="h-4 w-4" />
-              </IconButton>
-            </div>
-          ))}
-        </div>
-
-        <Button
-          className="mt-4"
-          onClick={() => patch({ points: [...draft.points, { id: nextId(), v: '0', ar: '', en: '' }] })}
-        >
-          <IconPlus className="h-4 w-4" />
-          {t.prices.addPoint}
-        </Button>
-      </section>
 
       <SaveBar
         dirty={dirty}

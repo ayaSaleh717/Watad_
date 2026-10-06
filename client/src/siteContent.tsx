@@ -1,10 +1,11 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react'
-import fallbackData from './data.json'
+import fallbackData from '../../data.json'
 import type { Lang } from './i18n'
 
 export type SiteContent = typeof fallbackData
 
 const ContentCtx = createContext<SiteContent>(fallbackData)
+const CONTENT_REFRESH_MS = 5_000
 
 const apiBase = (() => {
   const value = import.meta.env.VITE_API_BASE_URL
@@ -39,7 +40,7 @@ export function SiteContentProvider({ children }: { children: ReactNode }) {
     }
 
     load()
-    const interval = window.setInterval(loadIfVisible, 30_000)
+    const interval = window.setInterval(loadIfVisible, CONTENT_REFRESH_MS)
     window.addEventListener('focus', load)
     document.addEventListener('visibilitychange', loadIfVisible)
 

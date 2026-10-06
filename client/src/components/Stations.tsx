@@ -6,71 +6,6 @@ import { CheckIcon, DivisionIcon } from './Icons'
 import { Reveal } from './Reveal'
 import { SectionHead } from './Sections'
 
-/** Animated refinery illustration: distillation towers, tanks, flowing pipes, flare and vapor. */
-function Refinery({ className = '' }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 420 300" className={className} aria-hidden="true" style={{ direction: 'ltr' }}>
-      <defs>
-        <linearGradient id="st-gold" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0" stopColor="#ffc61a" />
-          <stop offset="1" stopColor="#c98d08" />
-        </linearGradient>
-        <linearGradient id="st-steel" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0" stopColor="#5a3b0c" />
-          <stop offset="1" stopColor="#2b1c0a" />
-        </linearGradient>
-        <radialGradient id="st-flame" cx="0.5" cy="0.8" r="0.7">
-          <stop offset="0" stopColor="#fff3c4" />
-          <stop offset="0.5" stopColor="#fdc324" />
-          <stop offset="1" stopColor="#d79a0b" stopOpacity="0" />
-        </radialGradient>
-      </defs>
-
-      {/* ground */}
-      <rect x="0" y="268" width="420" height="32" fill="#120b03" />
-      <rect x="0" y="266" width="420" height="3" fill="url(#st-gold)" opacity="0.7" />
-
-      {/* storage tanks */}
-      <g>
-        <rect x="18" y="206" width="72" height="62" rx="10" fill="url(#st-steel)" />
-        <rect x="18" y="206" width="72" height="62" rx="10" fill="none" stroke="#fbb40b" strokeOpacity="0.5" />
-        <path d="M18 226h72M18 246h72" stroke="#fbb40b" strokeOpacity="0.25" />
-        <rect x="104" y="226" width="50" height="42" rx="8" fill="url(#st-steel)" />
-        <rect x="104" y="226" width="50" height="42" rx="8" fill="none" stroke="#fbb40b" strokeOpacity="0.5" />
-      </g>
-
-      {/* towers */}
-      <g>
-        <rect x="170" y="62" width="50" height="206" rx="12" fill="url(#st-gold)" />
-        <path d="M170 104h50M170 146h50M170 188h50M170 228h50" stroke="#2b1c0a" strokeOpacity="0.45" strokeWidth="3" />
-        <rect x="232" y="108" width="40" height="160" rx="10" fill="url(#st-steel)" />
-        <rect x="232" y="108" width="40" height="160" rx="10" fill="none" stroke="#fbb40b" strokeOpacity="0.55" />
-        <path d="M232 148h40M232 188h40M232 228h40" stroke="#fbb40b" strokeOpacity="0.3" />
-        <rect x="186" y="48" width="18" height="16" rx="3" fill="#d79a0b" />
-      </g>
-
-      {/* flare stack */}
-      <rect x="340" y="132" width="9" height="136" rx="2" fill="#4a3010" />
-      <path d="M344.5 132c-12-8-8-24 0-34 8 10 12 26 0 34z" className="flame" fill="url(#st-flame)" />
-
-      {/* pipes (animated flow) */}
-      <g fill="none" stroke="#ffd24d" strokeWidth="3" strokeLinecap="round">
-        <path className="flow-pipe" d="M90 246H150V226H104" opacity="0.9" />
-        <path className="flow-pipe" d="M154 247H170" />
-        <path className="flow-pipe" d="M220 150H232" />
-        <path className="flow-pipe" d="M272 196H344.5V268" />
-      </g>
-
-      {/* vapor */}
-      <g fill="#fff" opacity="0">
-        {[0, 1.3, 2.6].map((d, i) => (
-          <circle key={d} className="vapor" cx={195 + i * 4} cy="44" r={5 + i} style={{ animationDelay: `${d}s` }} />
-        ))}
-      </g>
-    </svg>
-  )
-}
-
 export function Stations() {
   const { lang } = useLang()
   const content = useSiteContent()
@@ -151,42 +86,6 @@ export function Stations() {
                 </article>
               </Reveal>
             ))}
-          </div>
-        </div>
-
-        <div className="mt-14 grid items-center gap-10 lg:grid-cols-[0.95fr_1.05fr]">
-          <Reveal>
-            <div className="rounded-[2rem] bg-white/5 p-4 ring-1 ring-white/10 backdrop-blur sm:p-6">
-              <Refinery className="h-auto w-full" />
-            </div>
-          </Reveal>
-
-          <div>
-            <Reveal>
-              <h3 className="text-xl font-black text-gold-300">{s.flowT}</h3>
-            </Reveal>
-            <div role="list" className="mt-6 grid gap-4 sm:grid-cols-2">
-              {s.flow.map((step, i) => (
-                <Reveal key={step.t} delay={i * 0.1}>
-                  <div
-                    role="listitem"
-                    className="flex h-full items-start gap-4 rounded-2xl bg-white/5 p-4 ring-1 ring-white/10 transition hover:bg-white/10 hover:ring-gold-500/50"
-                  >
-                    <span className="relative grid h-10 w-10 shrink-0 place-items-center rounded-full bg-gradient-to-br from-gold-300 to-gold-600 font-black text-brown-950">
-                      <span
-                        className="absolute inset-0 rounded-full bg-gold-400/40"
-                        style={{ animation: 'pulse-ring 2.4s ease-out infinite', animationDelay: `${i * 0.4}s` }}
-                      />
-                      <span className="relative">{i + 1}</span>
-                    </span>
-                    <div>
-                      <div className="font-extrabold text-white">{step.t}</div>
-                      <div className="mt-0.5 text-sm text-white/65">{step.d}</div>
-                    </div>
-                  </div>
-                </Reveal>
-              ))}
-            </div>
           </div>
         </div>
 

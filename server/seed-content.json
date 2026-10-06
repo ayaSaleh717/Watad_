@@ -4,13 +4,6 @@
       "eyebrow": "المحطات",
       "title": "محطات تدعم سلسلة الإمداد بأكملها",
       "sub": "من التقطير والتكرير إلى التخزين والتوزيع، محطات مصممة للسلامة والاستمرارية.",
-      "flowT": "رحلة المنتج",
-      "flow": [
-        { "t": "الاستخراج", "d": "الحصول على الخام من مصادره." },
-        { "t": "التقطير", "d": "فصل الخام إلى مشتقاته." },
-        { "t": "التخزين", "d": "خزانات آمنة للمنتجات." },
-        { "t": "التوزيع", "d": "وصول المنتج إلى المستهلك." }
-      ],
       "soon": "قريباً",
       "types": [
         {
@@ -64,7 +57,7 @@
     "costs": {
       "eyebrow": "الأسعار",
       "title": "أسعار المحروقات",
-      "sub": "بطاقات سعر واضحة للمنتجات المتوفرة، مع مخطط يوضح حركة أسعار النفط العالمية منذ بداية 2026.",
+      "sub": "بطاقات سعر واضحة للمنتجات المتوفرة من المحروقات والغاز.",
       "dateLabel": "آخر تحديث",
       "date": "نموذج عرض",
       "unit": "وحدة السعر",
@@ -74,22 +67,7 @@
         { "kind": "barrel", "label": "سعر الجملة", "product": "مازوت أوروبي", "value": "71500", "unit": "ليرة", "tone": "dark" },
         { "kind": "pump", "label": "للمستهلك", "product": "بنزين مستورد", "value": "4.60", "unit": "TL", "tone": "gold" },
         { "kind": "gas", "label": "للمستهلك", "product": "جرة الغاز", "value": "65", "unit": "TL", "tone": "blue" }
-      ],
-      "chart": {
-        "title": "تغير سعر خام برنت منذ بداية 2026",
-        "sub": "متوسط شهري بالدولار للبرميل، آخر بيانات متاحة من EIA حتى أغسطس 2026.",
-        "source": "المصدر: U.S. Energy Information Administration",
-        "points": [
-          { "m": "ينا", "v": 66.6 },
-          { "m": "فبر", "v": 70.89 },
-          { "m": "مار", "v": 103.13 },
-          { "m": "أبر", "v": 117.29 },
-          { "m": "ماي", "v": 107.14 },
-          { "m": "يون", "v": 85.4 },
-          { "m": "يول", "v": 83.76 },
-          { "m": "أغس", "v": 91.08 }
-        ]
-      }
+      ]
     }
   },
   "en": {
@@ -97,13 +75,6 @@
       "eyebrow": "Stations",
       "title": "Stations that support the whole supply chain",
       "sub": "From distillation and refining to storage and distribution, stations built for safety and continuity.",
-      "flowT": "The product's journey",
-      "flow": [
-        { "t": "Extraction", "d": "Sourcing crude from its fields." },
-        { "t": "Distillation", "d": "Separating crude into its products." },
-        { "t": "Storage", "d": "Safe tanks for finished products." },
-        { "t": "Distribution", "d": "Getting product to the consumer." }
-      ],
       "soon": "Soon",
       "types": [
         {
@@ -157,7 +128,7 @@
     "costs": {
       "eyebrow": "Prices",
       "title": "Fuel prices",
-      "sub": "Clear product price cards, plus a chart showing global oil price movement since the start of 2026.",
+      "sub": "Clear product price cards for the available fuels and gas products.",
       "dateLabel": "Last update",
       "date": "Display sample",
       "unit": "Price unit",
@@ -167,22 +138,7 @@
         { "kind": "barrel", "label": "Wholesale price", "product": "European diesel", "value": "71500", "unit": "SYP", "tone": "dark" },
         { "kind": "pump", "label": "Consumer price", "product": "Imported gasoline", "value": "4.60", "unit": "TL", "tone": "gold" },
         { "kind": "gas", "label": "Consumer price", "product": "Gas cylinder", "value": "65", "unit": "TL", "tone": "blue" }
-      ],
-      "chart": {
-        "title": "Brent crude price change since the start of 2026",
-        "sub": "Monthly average in dollars per barrel, latest EIA data available through August 2026.",
-        "source": "Source: U.S. Energy Information Administration",
-        "points": [
-          { "m": "Jan", "v": 66.6 },
-          { "m": "Feb", "v": 70.89 },
-          { "m": "Mar", "v": 103.13 },
-          { "m": "Apr", "v": 117.29 },
-          { "m": "May", "v": 107.14 },
-          { "m": "Jun", "v": 85.4 },
-          { "m": "Jul", "v": 83.76 },
-          { "m": "Aug", "v": 91.08 }
-        ]
-      }
+      ]
     }
   }
 }

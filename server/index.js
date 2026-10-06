@@ -9,6 +9,7 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
+const ROOT_DIR = path.join(__dirname, '..')
 
 // Minimal .env loader so ADMIN_PASSWORD / PORT work without extra dependencies.
 // Real environment variables always win over files. The dashboard path is a transition fallback.
@@ -28,7 +29,7 @@ loadEnvFile(path.join(__dirname, '.env'))
 loadEnvFile(path.join(__dirname, '..', 'dashboard', '.env'))
 
 const DATA_DIR = process.env.DATA_DIR || path.join(__dirname, 'data')
-const CONTENT_FILE = path.join(DATA_DIR, 'content.json')
+const CONTENT_FILE = process.env.CONTENT_FILE || path.join(ROOT_DIR, 'data.json')
 const VISITS_FILE = path.join(DATA_DIR, 'visits.json')
 const SECRET_FILE = path.join(DATA_DIR, '.secret')
 const SEED_FILE = path.join(__dirname, 'seed-content.json')
@@ -38,6 +39,7 @@ const TOKEN_TTL_MS = 12 * 60 * 60 * 1000
 const MAX_BODY = 512 * 1024
 
 fs.mkdirSync(DATA_DIR, { recursive: true })
+fs.mkdirSync(path.dirname(CONTENT_FILE), { recursive: true })
 
 if (!process.env.ADMIN_PASSWORD) {
   console.warn('\n  ⚠  ADMIN_PASSWORD is not set — using the default "admin123". Set it before going live.\n')
@@ -80,14 +82,29 @@ function hydrateContent(value) {
   return { content: next, changed }
 }
 
-let content = readJson(CONTENT_FILE, null)
-if (!content) {
-  content = readSeedContent()
+function loadContent() {
+  const stored = readJson(CONTENT_FILE, null)
+  if (!stored) {
+    const seeded = readSeedContent()
+    writeJson(CONTENT_FILE, seeded)
+    return seeded
+  }
+
+  const hydrated = hydrateContent(stored)
+  if (hydrated.changed) writeJson(CONTENT_FILE, hydrated.content)
+  return hydrated.content
+}
+
+let content = loadContent()
+
+function readContent() {
+  content = loadContent()
+  return content
+}
+
+function saveContent(next) {
+  content = next
   writeJson(CONTENT_FILE, content)
-} else {
-  const hydrated = hydrateContent(content)
-  content = hydrated.content
-  if (hydrated.changed) writeJson(CONTENT_FILE, content)
 }
 
 // visits: { days: { 'YYYY-MM-DD': { views, visitors: [ids], lang: {ar,en}, paths: {}, referrers: {} } }, allVisitors: [ids] }
@@ -185,15 +202,6 @@ function cleanCards(cards) {
       unit: str(c.unit, 20),
       tone: TONES.includes(c.tone) ? c.tone : 'dark',
     }
-  })
-}
-
-function cleanPoints(points) {
-  if (!Array.isArray(points) || points.length > 36) throw new Error('Invalid chart points')
-  return points.map((p) => {
-    const v = Number(p.v)
-    if (!Number.isFinite(v) || v < 0) throw new Error('Invalid chart value')
-    return { m: str(p.m, 12), v }
   })
 }
 
@@ -381,7 +389,7 @@ const server = http.createServer(async (req, res) => {
   try {
     // --- public ---
     if (req.method === 'GET' && url.pathname === '/api/content') {
-      return send(res, 200, content)
+      return send(res, 200, readContent())
     }
 
     if (req.method === 'POST' && url.pathname === '/api/visits') {
@@ -420,64 +428,62 @@ const server = http.createServer(async (req, res) => {
       }
 
       if (req.method === 'GET' && url.pathname === '/api/admin/costs') {
+        const current = readContent()
         const pick = (l) => ({
-          date: content[l].costs.date,
-          cards: content[l].costs.cards,
-          points: content[l].costs.chart.points,
+          date: current[l].costs.date,
+          cards: current[l].costs.cards,
         })
         return send(res, 200, { ar: pick('ar'), en: pick('en') })
       }
 
       if (req.method === 'PUT' && url.pathname === '/api/admin/costs') {
         const body = await readBody(req)
-        const next = structuredClone(content)
+        const next = structuredClone(readContent())
         for (const lang of LANGS) {
           const src = body[lang]
           if (!src) throw Object.assign(new Error(`Missing ${lang}`), { status: 400 })
           next[lang].costs.date = str(src.date, 60)
           next[lang].costs.cards = cleanCards(src.cards)
-          next[lang].costs.chart.points = cleanPoints(src.points)
         }
-        content = next
-        writeJson(CONTENT_FILE, content)
+        saveContent(next)
         return send(res, 200, { ok: true })
       }
 
       if (req.method === 'GET' && url.pathname === '/api/admin/stations') {
+        const current = readContent()
         return send(res, 200, {
-          ar: { locations: content.ar.stationsPage.locations },
-          en: { locations: content.en.stationsPage.locations },
+          ar: { locations: current.ar.stationsPage.locations },
+          en: { locations: current.en.stationsPage.locations },
         })
       }
 
       if (req.method === 'PUT' && url.pathname === '/api/admin/stations') {
         const body = await readBody(req)
-        const next = structuredClone(content)
+        const next = structuredClone(readContent())
         for (const lang of LANGS) {
           if (!body[lang]) throw Object.assign(new Error(`Missing ${lang}`), { status: 400 })
           next[lang].stationsPage.locations = cleanLocations(body[lang].locations)
         }
-        content = next
-        writeJson(CONTENT_FILE, content)
+        saveContent(next)
         return send(res, 200, { ok: true })
       }
 
       if (req.method === 'GET' && url.pathname === '/api/admin/products') {
+        const current = readContent()
         return send(res, 200, {
-          ar: content.ar.products,
-          en: content.en.products,
+          ar: current.ar.products,
+          en: current.en.products,
         })
       }
 
       if (req.method === 'PUT' && url.pathname === '/api/admin/products') {
         const body = await readBody(req)
-        const next = structuredClone(content)
+        const next = structuredClone(readContent())
         for (const lang of LANGS) {
           if (!body[lang]) throw Object.assign(new Error(`Missing ${lang}`), { status: 400 })
           next[lang].products = cleanProducts(body[lang])
         }
-        content = next
-        writeJson(CONTENT_FILE, content)
+        saveContent(next)
         return send(res, 200, { ok: true })
       }
     }

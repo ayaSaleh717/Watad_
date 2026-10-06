@@ -1,4 +1,4 @@
-import data from '../data.json'
+import data from '../../../data.json'
 import type { Lang } from '../i18n'
 import type { SiteContent } from '../siteContent'
 
@@ -11,8 +11,6 @@ export type StationsContent = {
   eyebrow: string
   title: string
   sub: string
-  flowT: string
-  flow: { t: string; d: string }[]
   soon: string
   types: {
     key: string

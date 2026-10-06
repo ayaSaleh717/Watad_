@@ -11,15 +11,9 @@ export interface CostCard {
   tone: Tone
 }
 
-export interface ChartPoint {
-  m: string
-  v: number
-}
-
 export interface CostsLang {
   date: string
   cards: CostCard[]
-  points: ChartPoint[]
 }
 
 export type CostsPayload = Record<Lang, CostsLang>

@@ -3,11 +3,11 @@ import { Contact } from './components/Contact'
 import { Footer } from './components/Footer'
 import { Hero } from './components/Hero'
 import { Navbar } from './components/Navbar'
-import { Prices } from './components/Prices'
-import { About, Divisions, Hse, Journey, Products } from './components/Sections'
+import { About, Divisions, Hse, Journey } from './components/Sections'
 import { Splash } from './components/Splash'
 import { Stations } from './components/Stations'
-import { COSTS_ROUTE } from './pages/Costs'
+import { COSTS_ROUTE, CostsPage } from './pages/Costs'
+import { Products } from './pages/Products'
 import { STATIONS_ROUTE } from './pages/Stations'
 import { useLang } from './i18n'
 import { reportSiteVisit } from './siteContent'
@@ -139,11 +139,7 @@ export default function App() {
       {showSplash && <Splash onDone={onDone} />}
       <Navbar />
       {route === 'home' && <HomePage />}
-      {route === 'costs' && (
-        <main>
-          <Prices />
-        </main>
-      )}
+      {route === 'costs' && <CostsPage />}
       {route === 'stations' && (
         <main>
           <Stations />

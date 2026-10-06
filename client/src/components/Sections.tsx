@@ -1,7 +1,5 @@
 import type { ReactNode } from 'react'
 import { useLang } from '../i18n'
-import { getProductsContent } from '../pages/Products'
-import { useSiteContent } from '../siteContent'
 import { DivisionIcon } from './Icons'
 import { LogoMark } from './Logo'
 import { Reveal } from './Reveal'
@@ -110,34 +108,6 @@ export function Divisions() {
               <h3 className="relative mt-6 text-xl font-black text-brown-900 transition group-hover:text-gold-300">{it.t}</h3>
               <p className="relative mt-3 leading-relaxed text-ink/70 transition group-hover:text-white/75">{it.d}</p>
             </article>
-          </Reveal>
-        ))}
-      </div>
-    </Section>
-  )
-}
-
-export function Products() {
-  const { lang } = useLang()
-  const content = useSiteContent()
-  const p = getProductsContent(lang, content)
-  return (
-    <Section id="products">
-      <SectionHead eyebrow={p.eyebrow} title={p.title} sub={p.sub} />
-      <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-        {p.items.map((it, i) => (
-          <Reveal key={it.t} delay={i * 0.1}>
-            <div className="group h-full rounded-3xl border border-gold-500/25 bg-white p-6 transition duration-300 hover:-translate-y-1 hover:border-gold-500 hover:shadow-xl hover:shadow-gold-500/15">
-              <span className="rounded-full bg-gold-500/15 px-3 py-1 text-xs font-bold text-gold-700">{it.tag}</span>
-              <div className="my-6 flex justify-center">
-                <span className="relative grid h-20 w-20 place-items-center">
-                  <span className="absolute inset-0 rotate-[-45deg] rounded-[50%_0_50%_50%] bg-gradient-to-br from-gold-300 to-gold-600 transition group-hover:scale-110" />
-                  <span className="relative text-2xl font-black text-brown-950">{i + 1}</span>
-                </span>
-              </div>
-              <h3 className="text-lg font-black text-brown-900">{it.t}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-ink/70">{it.d}</p>
-            </div>
           </Reveal>
         ))}
       </div>

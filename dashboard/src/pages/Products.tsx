@@ -78,6 +78,8 @@ function move<T>(list: T[], index: number, dir: -1 | 1): T[] {
   return copy
 }
 
+const hasInvalidState = (state: State) => state.rows.some((row) => !row.ar.t.trim() || !row.en.t.trim())
+
 export function Products() {
   const { t, lang } = useI18n()
   const toast = useToast()
@@ -108,23 +110,36 @@ export function Products() {
   if (!draft || !saved) return <LoadState loading={loading} error={error} onRetry={() => void load()} />
 
   const dirty = JSON.stringify(draft) !== JSON.stringify(saved)
-  const hasInvalid = draft.rows.some((row) => !row.ar.t.trim() || !row.en.t.trim())
+  const hasInvalid = hasInvalidState(draft)
 
   const patchHeading = (l: Lang, changes: Partial<HeadingSide>) => setDraft({ ...draft, [l]: { ...draft[l], ...changes } })
   const patchSide = (id: number, l: Lang, changes: Partial<Side>) =>
     setDraft({ ...draft, rows: draft.rows.map((row) => (row.id === id ? { ...row, [l]: { ...row[l], ...changes } } : row)) })
 
-  const save = async () => {
+  const saveState = async (next: State) => {
     setSaving(true)
     try {
-      await api.saveProducts(toPayload(draft))
-      setSaved(draft)
+      await api.saveProducts(toPayload(next))
+      setSaved(next)
       toast(t.common.saved)
     } catch (err) {
       if (!(err instanceof ApiError && err.status === 401)) toast(t.common.saveError, 'error')
     } finally {
       setSaving(false)
     }
+  }
+
+  const save = () => saveState(draft)
+
+  const addProduct = () => {
+    setDraft({ ...draft, rows: [...draft.rows, { id: nextId(), ar: emptySide(), en: emptySide() }] })
+  }
+
+  const deleteProduct = (id: number) => {
+    if (!window.confirm(t.common.confirmDelete)) return
+    const next = { ...draft, rows: draft.rows.filter((row) => row.id !== id) }
+    setDraft(next)
+    if (!hasInvalidState(next)) void saveState(next)
   }
 
   const column = (row: Row, l: Lang) => {
@@ -155,7 +170,7 @@ export function Products() {
         title={t.products.title}
         sub={t.products.sub}
         actions={
-          <Button variant="dark" onClick={() => setDraft({ ...draft, rows: [...draft.rows, { id: nextId(), ar: emptySide(), en: emptySide() }] })}>
+          <Button variant="dark" onClick={addProduct} disabled={saving}>
             <IconPlus className="h-4 w-4" />
             {t.products.add}
           </Button>
@@ -213,9 +228,8 @@ export function Products() {
                 <IconButton
                   label={t.common.delete}
                   className="text-red-700 hover:bg-red-50"
-                  onClick={() =>
-                    window.confirm(t.common.confirmDelete) && setDraft({ ...draft, rows: draft.rows.filter((x) => x.id !== row.id) })
-                  }
+                  disabled={saving}
+                  onClick={() => deleteProduct(row.id)}
                 >
                   <IconTrash className="h-4 w-4" />
                 </IconButton>

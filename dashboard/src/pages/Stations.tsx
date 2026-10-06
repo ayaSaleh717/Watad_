@@ -67,6 +67,8 @@ function move<T>(list: T[], index: number, dir: -1 | 1): T[] {
   return copy
 }
 
+const hasInvalidRows = (rows: Row[]) => rows.some((r) => !r.ar.name.trim() || !r.en.name.trim())
+
 export function Stations() {
   const { t, lang } = useI18n()
   const toast = useToast()
@@ -97,22 +99,35 @@ export function Stations() {
   if (!draft || !saved) return <LoadState loading={loading} error={error} onRetry={() => void load()} />
 
   const dirty = JSON.stringify(draft) !== JSON.stringify(saved)
-  const hasInvalid = draft.some((r) => !r.ar.name.trim() || !r.en.name.trim())
+  const hasInvalid = hasInvalidRows(draft)
 
   const patchSide = (id: number, l: Lang, changes: Partial<Side>) =>
     setDraft(draft.map((r) => (r.id === id ? { ...r, [l]: { ...r[l], ...changes } } : r)))
 
-  const save = async () => {
+  const saveRows = async (next: Row[]) => {
     setSaving(true)
     try {
-      await api.saveStations(toPayload(draft))
-      setSaved(draft)
+      await api.saveStations(toPayload(next))
+      setSaved(next)
       toast(t.common.saved)
     } catch (err) {
       if (!(err instanceof ApiError && err.status === 401)) toast(t.common.saveError, 'error')
     } finally {
       setSaving(false)
     }
+  }
+
+  const save = () => saveRows(draft)
+
+  const addStation = () => {
+    setDraft([...draft, { id: nextId(), ar: emptySide(), en: emptySide() }])
+  }
+
+  const deleteStation = (id: number) => {
+    if (!window.confirm(t.common.confirmDelete)) return
+    const next = draft.filter((row) => row.id !== id)
+    setDraft(next)
+    if (!hasInvalidRows(next)) void saveRows(next)
   }
 
   const column = (row: Row, l: Lang) => {
@@ -151,10 +166,7 @@ export function Stations() {
         title={t.stations.title}
         sub={t.stations.sub}
         actions={
-          <Button
-            variant="dark"
-            onClick={() => setDraft([...draft, { id: nextId(), ar: emptySide(), en: emptySide() }])}
-          >
+          <Button variant="dark" onClick={addStation} disabled={saving}>
             <IconPlus className="h-4 w-4" />
             {t.stations.add}
           </Button>
@@ -185,7 +197,8 @@ export function Stations() {
                 <IconButton
                   label={t.common.delete}
                   className="text-red-700 hover:bg-red-50"
-                  onClick={() => window.confirm(t.common.confirmDelete) && setDraft(draft.filter((r) => r.id !== row.id))}
+                  disabled={saving}
+                  onClick={() => deleteStation(row.id)}
                 >
                   <IconTrash className="h-4 w-4" />
                 </IconButton>
