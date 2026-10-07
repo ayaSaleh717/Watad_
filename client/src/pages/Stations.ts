@@ -1,4 +1,4 @@
-import data from '../../../data.json'
+import data from '../fallbackContent.json'
 import type { Lang } from '../i18n'
 import type { SiteContent } from '../siteContent'
 

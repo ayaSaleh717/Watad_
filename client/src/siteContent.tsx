@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react'
-import fallbackData from '../../data.json'
+import fallbackData from './fallbackContent.json'
 import type { Lang } from './i18n'
 
 export type SiteContent = typeof fallbackData
