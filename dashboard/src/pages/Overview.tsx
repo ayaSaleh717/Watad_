@@ -56,14 +56,14 @@ function VisitsChart({ series }: { series: Stats['series'] }) {
       <svg ref={ref} viewBox={`0 0 ${W} ${H}`} className="h-auto w-full" role="img" aria-label={t.overview.chartTitle}>
         <defs>
           <linearGradient id="viewsArea" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0" stopColor="#fbb40b" stopOpacity=".35" />
-            <stop offset="1" stopColor="#fbb40b" stopOpacity="0" />
+            <stop offset="0" stopColor="#e0a82e" stopOpacity=".35" />
+            <stop offset="1" stopColor="#e0a82e" stopOpacity="0" />
           </linearGradient>
         </defs>
 
         {ticks.map((tick) => (
           <g key={tick}>
-            <line x1={L} x2={W - R} y1={y(tick)} y2={y(tick)} stroke="#1c1206" strokeOpacity={tick === 0 ? 0.25 : 0.08} />
+            <line x1={L} x2={W - R} y1={y(tick)} y2={y(tick)} stroke="#241911" strokeOpacity={tick === 0 ? 0.25 : 0.08} />
             <text x={L - 8} y={y(tick) + 4} textAnchor="end" className="fill-ink/55 text-[11px] font-bold">
               {num(tick)}
             </text>
@@ -71,11 +71,11 @@ function VisitsChart({ series }: { series: Stats['series'] }) {
         ))}
 
         {max > 0 && <path d={area} fill="url(#viewsArea)" />}
-        <path d={line('views')} fill="none" stroke="#d79a0b" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+        <path d={line('views')} fill="none" stroke="#c28f26" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
         <path
           d={line('visitors')}
           fill="none"
-          stroke="#1c1206"
+          stroke="#241911"
           strokeWidth="2.5"
           strokeDasharray="1 6"
           strokeLinecap="round"
@@ -90,9 +90,9 @@ function VisitsChart({ series }: { series: Stats['series'] }) {
 
         {hover !== null && point && (
           <g>
-            <line x1={x(hover)} x2={x(hover)} y1={T} y2={y(0)} stroke="#1c1206" strokeOpacity=".25" />
-            <circle cx={x(hover)} cy={y(point.views)} r="5" fill="#fbb40b" stroke="#1c1206" strokeWidth="2" />
-            <circle cx={x(hover)} cy={y(point.visitors)} r="4" fill="#1c1206" />
+            <line x1={x(hover)} x2={x(hover)} y1={T} y2={y(0)} stroke="#241911" strokeOpacity=".25" />
+            <circle cx={x(hover)} cy={y(point.views)} r="5" fill="#e0a82e" stroke="#241911" strokeWidth="2" />
+            <circle cx={x(hover)} cy={y(point.visitors)} r="4" fill="#241911" />
           </g>
         )}
 
@@ -203,10 +203,10 @@ export function Overview({ active }: { active: boolean }) {
 
       {stats && (
         <>
-          <section className="grid gap-4 md:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1fr]">
-            <div className="rounded-3xl bg-brown-950 p-6 text-white md:col-span-2 lg:col-span-1">
+          <section className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1fr]">
+            <div className="min-w-0 rounded-3xl bg-brown-950 p-4 text-white sm:p-6 md:col-span-2 lg:col-span-1">
               <div className="text-sm font-bold text-white/65">{t.overview.visitors}</div>
-              <div className="tabular mt-3 text-6xl font-black leading-none text-gold-400">{num(stats.totals.uniqueVisitors)}</div>
+              <div className="tabular mt-3 text-4xl font-black leading-none text-gold-400 sm:text-6xl">{num(stats.totals.uniqueVisitors)}</div>
               <div className="mt-4 text-xs font-bold text-white/55">{t.overview.visitorsNote}</div>
             </div>
 
@@ -290,9 +290,9 @@ export function Overview({ active }: { active: boolean }) {
 
 function Stat({ label, value, note }: { label: string; value: string; note: string }) {
   return (
-    <div className="rounded-3xl bg-white p-6 ring-1 ring-brown-900/10">
+    <div className="min-w-0 rounded-3xl bg-white p-4 ring-1 ring-brown-900/10 sm:p-6">
       <div className="text-sm font-bold text-ink/65">{label}</div>
-      <div className="tabular mt-3 text-4xl font-black leading-none text-brown-950">{value}</div>
+      <div className="tabular mt-3 text-3xl font-black leading-none text-brown-950 sm:text-4xl">{value}</div>
       <div className="mt-4 text-xs font-bold text-ink/50">{note}</div>
     </div>
   )

@@ -1,18 +1,27 @@
 @import "tailwindcss";
 
 @theme {
-  --color-gold-50: #fff8e1;
-  --color-gold-300: #ffd24d;
-  --color-gold-400: #fdc324;
-  --color-gold-500: #fbb40b;
-  --color-gold-600: #d79a0b;
-  --color-gold-700: #a77408;
-  --color-brown-950: #120b03;
-  --color-brown-900: #1c1206;
-  --color-brown-800: #2b1c0a;
-  --color-brown-700: #4a3010;
-  --color-ink: #2f2f31;
-  --color-fog: #f5f3ee;
+  /* Softer, slightly desaturated palette: same hues, easier on the eyes. */
+  --color-gold-50: #fdf6e3;
+  --color-gold-300: #f0d27a;
+  --color-gold-400: #e8bd4a;
+  --color-gold-500: #e0a82e;
+  --color-gold-600: #c28f26;
+  --color-gold-700: #96701f;
+  --color-brown-950: #181009;
+  --color-brown-900: #241911;
+  --color-brown-800: #34261a;
+  --color-brown-700: #4f3a20;
+  --color-ink: #35322f;
+  --color-fog: #f3f0e9;
+  --color-white: #fdfcf9;
+  --color-violet-500: #8c78c8;
+  --color-sky-200: #c6e0ee;
+  --color-sky-500: #5aa4cc;
+  --color-sky-600: #4488b0;
+  --color-sky-700: #36718f;
+  --color-sky-800: #2c5c78;
+  --color-red-700: #a94442;
   --font-sans: "Cairo", "Inter", system-ui, sans-serif;
 }
 
@@ -23,6 +32,7 @@ html {
 
 body {
   margin: 0;
+  overflow-x: clip;
   font-family: var(--font-sans);
   background: var(--color-fog);
   color: var(--color-ink);
@@ -132,12 +142,11 @@ body {
 /* ---------- Droplets ---------- */
 .drop {
   position: absolute;
-  bottom: -20px;
   border-radius: 50% 0 50% 50%;
   transform: rotate(-45deg);
   background: linear-gradient(135deg, var(--color-gold-300), var(--color-gold-600));
   opacity: 0;
-  animation: drop-up linear infinite;
+  animation: drop-burst ease-out infinite;
 }
 
 /* ---------- Wave ---------- */
@@ -196,10 +205,10 @@ body {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-14px); }
 }
-@keyframes drop-up {
-  0% { transform: translateY(0) rotate(-45deg); opacity: 0; }
-  15% { opacity: 0.55; }
-  100% { transform: translateY(-95vh) rotate(-45deg); opacity: 0; }
+@keyframes drop-burst {
+  0% { transform: translate(0, 0) rotate(var(--rot, -45deg)) scale(0.4); opacity: 0; }
+  12% { opacity: 0.6; }
+  100% { transform: translate(var(--dx, 0), var(--dy, -40svh)) rotate(var(--rot, -45deg)) scale(1); opacity: 0; }
 }
 @keyframes wave-x {
   from { transform: translateX(0); }

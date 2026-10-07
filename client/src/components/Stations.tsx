@@ -13,12 +13,12 @@ export function Stations() {
   const page = getStationsPageContent(lang, content)
 
   return (
-    <section id={STATIONS_ROUTE.id} className="relative min-h-screen overflow-hidden bg-brown-900 px-4 pb-20 pt-28 sm:px-6 sm:pb-28 sm:pt-32">
+    <section id={STATIONS_ROUTE.id} className="relative min-h-screen overflow-hidden bg-brown-900 px-4 pb-16 pt-24 sm:px-6 sm:pb-28 sm:pt-32">
       <div
         className="absolute inset-0"
         style={{
           background:
-            'radial-gradient(45% 50% at 15% 30%, rgba(251,180,11,0.16), transparent 70%), radial-gradient(40% 40% at 90% 90%, rgba(215,154,11,0.12), transparent 70%)',
+            'radial-gradient(45% 50% at 15% 30%, rgba(224,168,46,0.16), transparent 70%), radial-gradient(40% 40% at 90% 90%, rgba(194,143,38,0.12), transparent 70%)',
         }}
       />
       <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
@@ -26,7 +26,7 @@ export function Stations() {
           className="absolute inset-0 opacity-[0.05]"
           style={{
             backgroundImage:
-              'linear-gradient(rgba(255,210,77,1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,210,77,1) 1px, transparent 1px)',
+              'linear-gradient(rgba(240,210,122,1) 1px, transparent 1px), linear-gradient(90deg, rgba(240,210,122,1) 1px, transparent 1px)',
             backgroundSize: '56px 56px',
             maskImage: 'radial-gradient(70% 65% at 50% 42%, #000, transparent)',
             WebkitMaskImage: 'radial-gradient(70% 65% at 50% 42%, #000, transparent)',
@@ -55,7 +55,7 @@ export function Stations() {
           <div className="mt-6 grid gap-5 lg:grid-cols-2">
             {page.locations.map((station, i) => (
               <Reveal key={station.name} delay={i * 0.1}>
-                <article className="relative h-full overflow-hidden rounded-3xl bg-white p-7 shadow-2xl shadow-black/10 ring-1 ring-white/10">
+                <article className="relative h-full overflow-hidden rounded-3xl bg-white p-5 shadow-2xl sm:p-7 shadow-black/10 ring-1 ring-white/10">
                   <div className="absolute -end-12 -top-12 h-40 w-40 rounded-full bg-gold-500/20 blur-2xl" />
                   <div className="relative flex flex-col gap-6 sm:flex-row sm:items-start">
                     <div className="grid h-20 w-20 shrink-0 place-items-center rounded-3xl rounded-ss-md bg-gradient-to-br from-gold-300 to-gold-600 text-brown-950 shadow-lg shadow-gold-500/30">

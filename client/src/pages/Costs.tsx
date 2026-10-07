@@ -135,7 +135,7 @@ export function CostsSection() {
   const p = getCostsContent(lang, content)
 
   return (
-    <section id={COSTS_ROUTE.id} className="min-h-screen bg-white px-4 pb-20 pt-28 sm:px-6 sm:pb-28 sm:pt-32">
+    <section id={COSTS_ROUTE.id} className="min-h-screen bg-white px-4 pb-16 pt-24 sm:px-6 sm:pb-28 sm:pt-32">
       <div className="mx-auto max-w-6xl">
         <SectionHead eyebrow={p.eyebrow} title={p.title} sub={p.sub} />
 
@@ -150,7 +150,7 @@ export function CostsSection() {
           </div>
         </Reveal>
 
-        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-5">
+        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
           {p.cards.map((card, i) => (
             <Reveal key={`${card.product}-${card.label}`} delay={i * 0.08}>
               <article className="group h-full rounded-3xl bg-fog p-5 text-center ring-1 ring-black/5 transition duration-300 hover:-translate-y-1 hover:bg-white hover:shadow-xl hover:shadow-gold-500/15">

@@ -99,7 +99,6 @@ export function Prices() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
   const [saving, setSaving] = useState(false)
-  const [autoDate, setAutoDate] = useState(true)
 
   const load = useCallback(async () => {
     setLoading(true)
@@ -128,10 +127,9 @@ export function Prices() {
   const patchRow = (id: number, fn: (r: Row) => Row) => patch({ rows: draft.rows.map((r) => (r.id === id ? fn(r) : r)) })
 
   const addRow = () => {
-    const last = draft.rows[draft.rows.length - 1]
+    const last = draft.rows[0]
     patch({
       rows: [
-        ...draft.rows,
         {
           id: nextId(),
           kind: 'pump',
@@ -140,6 +138,7 @@ export function Prices() {
           ar: { label: '', product: arDict.prices.newProduct, unit: last?.ar.unit ?? '' },
           en: { label: '', product: enDict.prices.newProduct, unit: last?.en.unit ?? '' },
         },
+        ...draft.rows,
       ],
     })
   }
@@ -147,7 +146,7 @@ export function Prices() {
   const save = async () => {
     setSaving(true)
     try {
-      const next = autoDate ? { ...draft, dateAr: today('ar'), dateEn: today('en') } : draft
+      const next = { ...draft, dateAr: today('ar'), dateEn: today('en') }
       await api.saveCosts(toPayload(next))
       setDraft(next)
       setSaved(next)
@@ -163,39 +162,19 @@ export function Prices() {
     <div>
       <PageHead title={t.prices.title} sub={t.prices.sub} />
 
-      <section className="rounded-3xl bg-white p-5 ring-1 ring-brown-900/10 sm:p-6">
-        <h2 className="mb-4 text-lg font-black text-brown-950">{t.prices.lastUpdate}</h2>
-        <div className="grid gap-4 sm:grid-cols-2">
-          <Field label={<LangTag code="ar" />}>
-            <Input dir="rtl" value={draft.dateAr} onChange={(e) => patch({ dateAr: e.target.value })} disabled={autoDate} />
-          </Field>
-          <Field label={<LangTag code="en" />}>
-            <Input dir="ltr" value={draft.dateEn} onChange={(e) => patch({ dateEn: e.target.value })} disabled={autoDate} />
-          </Field>
-        </div>
-        <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
-          <label className="flex cursor-pointer items-center gap-2.5 text-sm font-bold text-brown-900">
-            <input
-              type="checkbox"
-              checked={autoDate}
-              onChange={(e) => setAutoDate(e.target.checked)}
-              className="h-4 w-4 accent-gold-600"
-            />
-            {t.prices.autoDate}
-          </label>
-          <Button disabled={autoDate} onClick={() => patch({ dateAr: today('ar'), dateEn: today('en') })}>
-            {t.prices.setToday}
-          </Button>
-        </div>
-      </section>
-
-      <h2 className="mb-4 mt-10 text-xl font-black text-brown-950">{t.prices.cardsTitle}</h2>
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+        <h2 className="text-xl font-black text-brown-950">{t.prices.cardsTitle}</h2>
+        <Button variant="dark" onClick={addRow}>
+          <IconPlus className="h-4 w-4" />
+          {t.prices.addCard}
+        </Button>
+      </div>
       <div className="space-y-4">
         {draft.rows.map((row, i) => (
           <article key={row.id} className="overflow-hidden rounded-3xl bg-white ring-1 ring-brown-900/10">
-            <header className="flex items-center gap-3 border-b border-brown-900/10 bg-fog/60 px-5 py-3">
+            <header className="flex flex-wrap items-center gap-x-3 gap-y-2 border-b border-brown-900/10 bg-fog/60 px-4 py-3 sm:px-5">
               <span className={`h-3 w-3 shrink-0 rounded-full ${toneDot[row.tone]}`} />
-              <div className="min-w-0 flex-1">
+              <div className="min-w-0 flex-1 basis-36">
                 <div className="truncate text-sm font-black text-brown-950">{row[lang].product || t.prices.newProduct}</div>
                 <div className="truncate text-xs font-bold text-ink/55">{row[lang].label}</div>
               </div>
@@ -223,7 +202,7 @@ export function Prices() {
               </div>
             </header>
 
-            <div className="grid gap-5 p-5 lg:grid-cols-[13rem_1fr]">
+            <div className="grid gap-5 p-4 sm:p-5 lg:grid-cols-[13rem_1fr]">
               <div className="space-y-3">
                 <Field label={t.prices.price} error={validPrice(row.value) ? undefined : t.prices.invalidPrice}>
                   <Input
@@ -305,11 +284,6 @@ export function Prices() {
           </article>
         ))}
       </div>
-
-      <Button className="mt-4" onClick={addRow}>
-        <IconPlus className="h-4 w-4" />
-        {t.prices.addCard}
-      </Button>
 
       <SaveBar
         dirty={dirty}

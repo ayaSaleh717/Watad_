@@ -62,7 +62,7 @@ export function Contact() {
     <section id="contact" className="relative overflow-hidden bg-brown-950 px-4 py-20 sm:px-6 sm:py-28">
       <div
         className="absolute inset-0"
-        style={{ background: 'radial-gradient(50% 60% at 85% 20%, rgba(251,180,11,0.18), transparent 70%)' }}
+        style={{ background: 'radial-gradient(50% 60% at 85% 20%, rgba(224,168,46,0.18), transparent 70%)' }}
       />
       <div className="relative mx-auto max-w-6xl">
         <SectionHead eyebrow={c.eyebrow} title={c.title} sub={c.sub} light />
@@ -106,7 +106,7 @@ export function Contact() {
               />
               <button
                 type="submit"
-                className="rounded-xl bg-gradient-to-r from-gold-500 to-gold-400 px-6 py-3.5 text-base font-extrabold text-brown-950 shadow-[0_10px_40px_-10px_rgba(251,180,11,0.8)] transition hover:-translate-y-0.5 sm:col-span-2"
+                className="rounded-xl bg-gradient-to-r from-gold-500 to-gold-400 px-6 py-3.5 text-base font-extrabold text-brown-950 shadow-[0_10px_40px_-10px_rgba(224,168,46,0.8)] transition hover:-translate-y-0.5 sm:col-span-2"
               >
                 {c.form.send}
               </button>

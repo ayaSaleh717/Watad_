@@ -78,6 +78,16 @@ export const IconExternal = ({ className }: IconProps) => (
     <path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5" />
   </svg>
 )
+export const IconMenu = ({ className }: IconProps) => (
+  <svg {...base(className)}>
+    <path d="M4 6h16M4 12h16M4 18h16" />
+  </svg>
+)
+export const IconClose = ({ className }: IconProps) => (
+  <svg {...base(className)}>
+    <path d="M6 6l12 12M18 6 6 18" />
+  </svg>
+)
 export const IconCheck = ({ className }: IconProps) => (
   <svg {...base(className)}>
     <path d="m5 12 5 5 9-10" />

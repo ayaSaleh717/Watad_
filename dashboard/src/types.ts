@@ -28,21 +28,6 @@ export interface Station {
 
 export type StationsPayload = Record<Lang, { locations: Station[] }>
 
-export interface ProductItem {
-  t: string
-  d: string
-  tag: string
-}
-
-export interface ProductsLang {
-  eyebrow: string
-  title: string
-  sub: string
-  items: ProductItem[]
-}
-
-export type ProductsPayload = Record<Lang, ProductsLang>
-
 export interface Stats {
   totals: {
     totalViews: number

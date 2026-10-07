@@ -1,4 +1,4 @@
-import type { CostsPayload, ProductsPayload, Stats, StationsPayload } from './types'
+import type { CostsPayload, Stats, StationsPayload } from './types'
 
 const base = (import.meta.env.VITE_API_BASE_URL ?? '').replace(/\/$/, '')
 const TOKEN_KEY = 'watad-admin-token'
@@ -77,7 +77,4 @@ export const api = {
   getStations: () => request<StationsPayload>('/api/admin/stations'),
   saveStations: (data: StationsPayload) =>
     request<{ ok: true }>('/api/admin/stations', { method: 'PUT', body: JSON.stringify(data) }),
-  getProducts: () => request<ProductsPayload>('/api/admin/products'),
-  saveProducts: (data: ProductsPayload) =>
-    request<{ ok: true }>('/api/admin/products', { method: 'PUT', body: JSON.stringify(data) }),
 }

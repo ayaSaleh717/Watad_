@@ -31,7 +31,7 @@ export function Splash({ onDone }: { onDone: () => void }) {
             className="absolute inset-0 rounded-full border border-gold-400/50"
             style={{ animation: 'pulse-ring 2s ease-out infinite' }}
           />
-          <LogoMark className="relative h-28 w-auto drop-shadow-[0_10px_30px_rgba(251,180,11,0.45)] sm:h-36" />
+          <LogoMark className="relative h-28 w-auto drop-shadow-[0_10px_30px_rgba(224,168,46,0.45)] sm:h-36" />
         </div>
         <div className="text-center" dir="ltr">
           <div dir="rtl" className="text-3xl font-black text-white sm:text-4xl">

@@ -120,7 +120,7 @@ export function Stations() {
   const save = () => saveRows(draft)
 
   const addStation = () => {
-    setDraft([...draft, { id: nextId(), ar: emptySide(), en: emptySide() }])
+    setDraft([{ id: nextId(), ar: emptySide(), en: emptySide() }, ...draft])
   }
 
   const deleteStation = (id: number) => {
@@ -182,7 +182,7 @@ export function Stations() {
       <div className="space-y-4">
         {draft.map((row, i) => (
           <article key={row.id} className="overflow-hidden rounded-3xl bg-white ring-1 ring-brown-900/10">
-            <header className="flex items-center gap-3 border-b border-brown-900/10 bg-fog/60 px-5 py-3">
+            <header className="flex items-center gap-3 border-b border-brown-900/10 bg-fog/60 px-4 py-3 sm:px-5">
               <div className="min-w-0 flex-1">
                 <div className="truncate text-base font-black text-brown-950">{row[lang].name || t.stations.newStation}</div>
                 <div className="truncate text-xs font-bold text-ink/55">{row[lang].area}</div>
@@ -204,7 +204,7 @@ export function Stations() {
                 </IconButton>
               </div>
             </header>
-            <div className="grid gap-6 p-5 md:grid-cols-2 md:gap-8">
+            <div className="grid gap-6 p-4 sm:p-5 md:grid-cols-2 md:gap-8">
               {column(row, 'ar')}
               {column(row, 'en')}
             </div>

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, type CSSProperties } from 'react'
 
 export function Pumpjack({ className = '' }: { className?: string }) {
   return (
@@ -15,28 +15,46 @@ export function Pumpjack({ className = '' }: { className?: string }) {
       <circle cx="114" cy="50" r="7" />
       <g className="pj-wheel">
         <circle cx="168" cy="118" r="14" />
-        <circle cx="168" cy="108" r="3" fill="#1c1206" />
+        <circle cx="168" cy="108" r="3" fill="#241911" />
       </g>
     </svg>
   )
 }
 
 interface DropSpec {
-  left: number
+  x: number // spawn offset from the centre (% of width)
+  y: number // spawn offset from the centre (% of height)
+  dx: number // travel distance (vw)
+  dy: number // travel distance (svh)
+  rot: number // so the drop's tip points along its path
   size: number
   delay: number
   duration: number
 }
 
-// Deterministic so SSR/StrictMode renders are stable.
-const DROPS: DropSpec[] = Array.from({ length: 16 }, (_, i) => ({
-  left: (i * 37 + 8) % 96,
-  size: 6 + ((i * 5) % 11),
-  delay: (i * 1.3) % 9,
-  duration: 9 + ((i * 7) % 8),
-}))
+const DROP_COUNT = 30
 
-/** Animated hero background: glow, grid, pumpjacks, rising droplets and an optional video. */
+// Deterministic so SSR/StrictMode renders are stable. Drops start inside the headline area
+// and fly outwards in all directions, like spray bursting out of the text.
+const DROPS: DropSpec[] = Array.from({ length: DROP_COUNT }, (_, i) => {
+  const jitter = (((i * 53) % 17) / 17 - 0.5) * 0.6
+  const angle = (i / DROP_COUNT) * Math.PI * 2 + jitter
+  const dist = 0.55 + (((i * 29) % 11) / 11) * 0.45
+  const dx = Math.cos(angle) * 46 * dist
+  const dy = Math.sin(angle) * 44 * dist
+  return {
+    x: (((i * 37) % 21) / 21 - 0.5) * 34,
+    y: (((i * 23) % 13) / 13 - 0.5) * 16,
+    dx,
+    dy,
+    rot: (Math.atan2(dx, -dy) * 180) / Math.PI - 45,
+    size: 6 + ((i * 5) % 9),
+    delay: (i * 0.37) % 6,
+    duration: 4.5 + ((i * 7) % 6) * 0.7,
+  }
+})
+
+/** Animated hero background: glow, pumpjacks, droplets spraying out of the headline and an optional video. */
 export function HeroBackdrop() {
   const [videoOk, setVideoOk] = useState(false)
 
@@ -60,37 +78,33 @@ export function HeroBackdrop() {
         className="absolute inset-0"
         style={{
           background:
-            'radial-gradient(60% 55% at 70% 35%, rgba(251,180,11,0.28), transparent 70%), radial-gradient(50% 50% at 10% 90%, rgba(215,154,11,0.2), transparent 70%), linear-gradient(180deg, #120b03 0%, #1c1206 60%, #2b1c0a 100%)',
-        }}
-      />
-      <div
-        className="absolute inset-0 opacity-[0.07]"
-        style={{
-          backgroundImage:
-            'linear-gradient(rgba(255,210,77,1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,210,77,1) 1px, transparent 1px)',
-          backgroundSize: '56px 56px',
-          maskImage: 'radial-gradient(70% 70% at 50% 40%, #000, transparent)',
-          WebkitMaskImage: 'radial-gradient(70% 70% at 50% 40%, #000, transparent)',
+            'radial-gradient(60% 55% at 50% 42%, rgba(224,168,46,0.24), transparent 70%), radial-gradient(50% 50% at 10% 90%, rgba(194,143,38,0.2), transparent 70%), linear-gradient(180deg, #181009 0%, #241911 60%, #34261a 100%)',
         }}
       />
 
       {/* Pumpjack silhouettes */}
-      <Pumpjack className="absolute -bottom-1 start-[2%] w-40 text-brown-700/70 sm:w-56" />
-      <Pumpjack className="absolute -bottom-1 end-[4%] hidden w-72 text-brown-800 sm:block" />
-      <Pumpjack className="absolute bottom-2 end-[34%] hidden w-32 text-brown-700/40 lg:block" />
+      <Pumpjack className="absolute bottom-12 start-[2%] w-32 text-brown-700/70 sm:bottom-20 sm:w-52" />
+      <Pumpjack className="absolute bottom-12 end-[4%] hidden w-64 text-brown-800 sm:bottom-20 sm:block" />
+      <Pumpjack className="absolute bottom-24 end-[34%] hidden w-28 text-brown-700/40 lg:block" />
 
-      {/* Rising droplets */}
+      {/* Droplets bursting out of the headline */}
       {DROPS.map((d, i) => (
         <span
           key={i}
           className="drop"
-          style={{
-            left: `${d.left}%`,
-            width: d.size,
-            height: d.size,
-            animationDelay: `${d.delay}s`,
-            animationDuration: `${d.duration}s`,
-          }}
+          style={
+            {
+              left: `${50 + d.x}%`,
+              top: `${46 + d.y}%`,
+              width: d.size,
+              height: d.size,
+              '--dx': `${d.dx.toFixed(1)}vw`,
+              '--dy': `${d.dy.toFixed(1)}svh`,
+              '--rot': `${d.rot.toFixed(1)}deg`,
+              animationDelay: `${d.delay}s`,
+              animationDuration: `${d.duration}s`,
+            } as CSSProperties
+          }
         />
       ))}
     </div>
