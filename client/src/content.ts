@@ -3,7 +3,8 @@
 export const CONTACT = {
   phone: '+963947174565',
   email: 'watadpetroleum@gmail.com',
-  facebook: 'watadpetrol',
+  facebook: 'watadpetro1',
+  facebookUrl: 'https://www.facebook.com/watadpetro1?mibextid=rS40aB7S9Ucbxw6v',
   telegram: 'watadpetroleum',
 }
 

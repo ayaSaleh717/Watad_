@@ -54,7 +54,7 @@ export function Contact() {
   const channels = [
     { label: c.info.phone, value: CONTACT.phone, href: `tel:${CONTACT.phone}`, icon: PhoneIcon, ltr: true },
     { label: c.info.email, value: CONTACT.email, href: `mailto:${CONTACT.email}`, icon: MailIcon, ltr: true },
-    { label: c.info.facebook, value: CONTACT.facebook, href: `https://facebook.com/${CONTACT.facebook}`, icon: FacebookIcon, ltr: true },
+    { label: c.info.facebook, value: CONTACT.facebook, href: CONTACT.facebookUrl, icon: FacebookIcon, ltr: true },
     { label: c.info.telegram, value: CONTACT.telegram, href: `https://t.me/${CONTACT.telegram}`, icon: TelegramIcon, ltr: true },
   ]
 
